@@ -27,40 +27,25 @@ object QuickstartApp {
         complete(StatusCodes.OK, "server is runner")
       }
     } ~
-    path(Segment) { deviceId =>
-      get {
-        Option(deviceRegistry.registry.get(deviceId)) match {
-          case Some(device) => {
-            println(device)
-            complete(StatusCodes.OK, device.toResponse())
+      path(Segment) { deviceId =>
+        get {
+          Option(deviceRegistry.registry.get(deviceId)) match {
+            case Some(device) => {
+              println(device)
+              complete(StatusCodes.OK, device.toResponse())
+            }
+            case None => complete(StatusCodes.NotFound, s"$deviceId has not yet sent data")
           }
-          case None => complete(StatusCodes.NotFound, s"$deviceId has not yet sent data")
-        }
-      } ~
-      post {
-        entity(as[IncomingPayload]) { payload =>
-          deviceRegistry.accept(payload)
-          complete(StatusCodes.OK, "Data Accepted")
-        }
+        } ~
+          post {
+            entity(as[IncomingPayload]) { payload =>
+              deviceRegistry.accept(payload)
+              complete(StatusCodes.OK, "Data Accepted")
+            }
+          }
       }
-    }
   }
 
-  //#start-http-server
-  def x_main(args: Array[String]): Unit = {
-    //#server-bootstrapping
-    val rootBehavior = Behaviors.setup[Nothing] { context =>
-      val userRegistryActor = context.spawn(UserRegistry(), "UserRegistryActor")
-      context.watch(userRegistryActor)
-
-      val routes = new UserRoutes(userRegistryActor)(context.system)
-      startHttpServer(routes.userRoutes)(context.system)
-
-      Behaviors.empty
-    }
-    val system = ActorSystem[Nothing](rootBehavior, "HelloAkkaHttpServer")
-    //#server-bootstrapping
-  }
 
   //#start-http-server
   private def startHttpServer(routes: Route)(implicit system: ActorSystem[_]): Unit = {

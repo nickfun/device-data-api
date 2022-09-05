@@ -62,9 +62,11 @@ class DataRegistry(val registry: ConcurrentHashMap[String, Device]) {
         println(s"new device! ${payload.id}")
         val first = payload.readings.head
         println(payload)
+        val seen = new ConcurrentHashMap[String, Boolean]()
+        seen.put(first.timestamp, true)
         val device = new Device(
           payload.id,
-          new ConcurrentHashMap[String, Boolean](),
+          seen,
           new AtomicLong(first.count),
           new AtomicReference[DeviceReading](first)
         )
