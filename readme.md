@@ -4,7 +4,7 @@
 
 `sbt assembly` will build a jar file under `target/scala-2.13`
 
-I'll also attach it as a github release
+[I'll also attach it as a github release](https://github.com/nickfun/device-data-api/releases)
 
 You can set the port to bind to with the environment variable `PORT` 
 
@@ -27,7 +27,7 @@ Three Routes:
 
 Will always return a `200` with a string to confirm the server is accepting traffic
 
-### GET /<device id>
+### GET /{deviceId}
 
 if the device has not sent data before, the response is a 404
 
@@ -43,7 +43,7 @@ if the device has sent data before, example response is:
 }
 ```
 
-### POST /<device id>
+### POST /{deviceId}
 
 Send it a json payload as described in the document, it will process the payload.
 
