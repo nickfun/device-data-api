@@ -1,8 +1,16 @@
 # Device Data API
 
-## Building
+## Building & Running
 
 `sbt assembly` will build a jar file under `target/scala-2.13`
+
+I'll also attach it as a github release
+
+You can set the port to bind to with the environment variable `PORT` 
+
+if you downloaded the jar from github, run with `java -jar server.jar`
+
+if you build it locally, run it with `java -jar target/scala-2.13/*.jar`
 
 ## Versions
 
@@ -46,3 +54,9 @@ example:
 ```
 curl http://localhost:8080/device-x -H 'content-type: application/json' -d '{"id":"device-x","readings":[{"timestamp":"2023-05-29T17:08:15+01:00", "count":4}]}'
 ```
+
+## Things I would have like to done more
+
+- testing of the http server routes
+- real logging instead of println
+- more useful response when sending an Incoming Payload
