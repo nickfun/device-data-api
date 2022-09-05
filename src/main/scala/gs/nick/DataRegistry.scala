@@ -40,7 +40,7 @@ class Device(val id: String,
   }
 }
 
-class DataRegistry(registry: ConcurrentHashMap[String, Device]) {
+class DataRegistry(val registry: ConcurrentHashMap[String, Device]) {
 
   def accept(payload: IncomingPayload): Unit = {
     if (registry.containsKey(payload.id)) {

@@ -13,5 +13,8 @@ object JsonFormats  {
   implicit val usersJsonFormat = jsonFormat1(Users)
 
   implicit val actionPerformedJsonFormat = jsonFormat1(ActionPerformed)
+
+  implicit val fmtDeviceReading = jsonFormat2(DeviceReading)
+  implicit val fmtIncomingPayload = jsonFormat2(IncomingPayload)
 }
 //#json-formats
