@@ -31,6 +31,7 @@ class Device(val id: String,
     if (knownRecords.containsKey(newReading.timestamp)) {
       println(s"Previously Seen Record! $newReading")
     } else {
+      println(s"new reading! $newReading")
       knownRecords.put(newReading.timestamp, true)
       currentCount.addAndGet(newReading.count);
       if (newReading.isAfter(recentReading.get())) {
@@ -38,6 +39,9 @@ class Device(val id: String,
       }
     }
   }
+
+  override def toString(): String =
+    s"Device($id, knownRecordSize=${knownRecords.size()}, currentCount=${currentCount.get()}, recentReading=${recentReading.get()} "
 }
 
 class DataRegistry(val registry: ConcurrentHashMap[String, Device]) {
@@ -45,10 +49,13 @@ class DataRegistry(val registry: ConcurrentHashMap[String, Device]) {
   def accept(payload: IncomingPayload): Unit = {
     if (registry.containsKey(payload.id)) {
       val device = registry.get(payload.id)
+      println(s"known device ${payload.id}")
       payload.readings.foreach(data => device.accept(data))
     } else {
       if (payload.readings.nonEmpty) {
+        println(s"new device! ${payload.id}")
         val first = payload.readings.head
+        println(payload)
         val device = new Device(
           payload.id,
           new ConcurrentHashMap[String, Boolean](),
@@ -57,6 +64,8 @@ class DataRegistry(val registry: ConcurrentHashMap[String, Device]) {
         )
         payload.readings.tail.foreach(data => device.accept(data))
         registry.put(device.id, device)
+      } else {
+        println("empty list of readings")
       }
     }
   }
