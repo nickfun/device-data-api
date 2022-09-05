@@ -32,7 +32,7 @@ object QuickstartApp {
         Option(deviceRegistry.registry.get(deviceId)) match {
           case Some(device) => {
             println(device)
-            complete(StatusCodes.OK, device.recentReading.get())
+            complete(StatusCodes.OK, device.toResponse())
           }
           case None => complete(StatusCodes.NotFound, s"$deviceId has not yet sent data")
         }

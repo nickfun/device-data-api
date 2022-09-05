@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 
 case class IncomingPayload(id: String, readings: List[DeviceReading])
 
+case class DeviceResponse(currentCount: Long, mostRecentReading: DeviceReading)
+
 case class DeviceReading(timestamp: String, count: Int) {
   val dateFormatter: DateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
 
@@ -38,6 +40,10 @@ class Device(val id: String,
         recentReading.set(newReading)
       }
     }
+  }
+
+  def toResponse(): DeviceResponse = {
+    DeviceResponse(currentCount.get(), recentReading.get())
   }
 
   override def toString(): String =

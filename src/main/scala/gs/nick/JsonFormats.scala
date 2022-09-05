@@ -15,8 +15,8 @@ object JsonFormats  {
 
   implicit val actionPerformedJsonFormat = jsonFormat1(ActionPerformed)
 
-//  implicit val fmtDeviceReading = jsonFormat2(DeviceReading)
-  implicit val fmtDeviceReading: RootJsonFormat[DeviceReading] = jsonFormat[String, Int, DeviceReading](DeviceReading, "timestamp", "count")
+  implicit val fmtDeviceReading = jsonFormat[String, Int, DeviceReading](DeviceReading, "timestamp", "count")
   implicit val fmtIncomingPayload = jsonFormat2(IncomingPayload)
+  implicit val fmtDeviceResponse = jsonFormat2(DeviceResponse)
 }
 //#json-formats
