@@ -24,9 +24,9 @@ case class DeviceReading(timestamp: String, count: Int) {
 }
 
 class Device(val id: String,
-             knownRecords: ConcurrentHashMap[String, Boolean],
-             currentCount: AtomicLong,
-             recentReading: AtomicReference[DeviceReading]) {
+             val knownRecords: ConcurrentHashMap[String, Boolean],
+             val currentCount: AtomicLong,
+             val recentReading: AtomicReference[DeviceReading]) {
   def accept(newReading: DeviceReading): Unit = {
     if (knownRecords.containsKey(newReading.timestamp)) {
       println(s"Previously Seen Record! $newReading")
